@@ -1,22 +1,4 @@
 module.exports = [
-"[externals]/path [external] (path, cjs)", ((__turbopack_context__, module, exports) => {
-
-const mod = __turbopack_context__.x("path", () => require("path"));
-
-module.exports = mod;
-}),
-"[externals]/url [external] (url, cjs)", ((__turbopack_context__, module, exports) => {
-
-const mod = __turbopack_context__.x("url", () => require("url"));
-
-module.exports = mod;
-}),
-"[externals]/fs [external] (fs, cjs)", ((__turbopack_context__, module, exports) => {
-
-const mod = __turbopack_context__.x("fs", () => require("fs"));
-
-module.exports = mod;
-}),
 "[project]/postcss.config.mjs [postcss] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
@@ -30,6 +12,12 @@ const config = {
     }
 };
 const __TURBOPACK__default__export__ = config;
+}),
+"[externals]/path [external] (path, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("path", () => require("path"));
+
+module.exports = mod;
 }),
 "[turbopack-node]/transforms/transforms.ts [postcss] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
@@ -201,6 +189,12 @@ async function transform(ipc, cssContent, name, sourceMap) {
     };
 }
 }),
+"[project]/node_modules/postcss/lib/postcss.mjs [postcss] (ecmascript)", ((__turbopack_context__, module, exports) => {
+
+const e = new Error("Could not parse module '[project]/node_modules/postcss/lib/postcss.mjs', file not found");
+e.code = 'MODULE_UNPARSABLE';
+throw e;
+}),
 ];
 
-//# sourceMappingURL=%5Broot-of-the-server%5D__51225daf._.js.map
+//# sourceMappingURL=%5Broot-of-the-server%5D__368d5f01._.js.map
