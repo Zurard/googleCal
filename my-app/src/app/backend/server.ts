@@ -1,56 +1,64 @@
-// here i need to implemetn the Oath feature
+"use server";
+// need to call the google oauth api to get the user info and then create a session for the user
 import express from "express";
-import bodyParser from "body-parser";
-import OAuth2Server from "oauth2-server";
+import jwt from "jsonwebtoken";
+import cors from "cors";
+import dotenv from "dotenv";
+import { OAuth2Client } from "google-auth-library";
+
+dotenv.config();
 
 const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(cors());
 
-const request = OAuth2Server.Request;
-const response = OAuth2Server.Response;
+const PORT = process.env.PORT || 5000;
 
-const oauth = new OAuth2Server({
-  model: require("./model"), 
-  // You need to implement the model according to your database
-  allowBearerTokensInQueryString: true,
+const client = new OAuth2Client(
+  process.env.CLIENT_ID,
+  process.env.CLIENT_SECRET,
+);
+
+app.listen(PORT, (error) => {
+  if (error) {
+    console.error("Error starting the server:", error);
+  } else {
+    console.log(`Server is running on port ${PORT}`);
+  }
 });
 
-// fucntions to handle the token genrration and authrization
-app.post("/oath/token", (req, res) => {
-  const request = new OAuth2Server.Request(req);
-  const response = new OAuth2Server.Response(res);
-
-  // now we need to generate the token
-  oauth
-    .token(request, response)
-    .then((token) => {
-      res.json(token);
-    })
-    .catch((err) => {
-      res.status(err.code || 500).json(err);
-    });
+app.post("auth/login", async (req, res) => {
+  console.log(req.headers.authorization);
+  const tokenId = req.headers.authorization?.split(" ")[1];
+  const ticket = await client.verifyIdToken({
+    idToken: tokenId!,
+    audience: client._clientId,
+  });
+  const payload = ticket.getPayload();
+  console.log(payload);
+  if (payload?.aud != client._clientId) {
+    console.error("Invalid client ID");
+    res.status(401).json({ message: "Unauthorized" });
+  }
+  if (!payload) {
+    console.error("Invalid token");
+    res.status(401).json({ message: "Unauthorized" });
+    return;
+  }
+  const { email, name } = payload;
+  const authToken = jwt.sign({ email, name }, process.env.JWT_SECRET!, {
+    expiresIn: "1h",
+  });
+  console.log(authToken);
+  res.json({ authToken });
 });
 
-//  now we need a middelware to intercept the request and check for the token
-app.get("/secure", (req, res) => {
-  const request = new OAuth2Server.Request(req);
-  const response = new OAuth2Server.Response(res);
 
-  oauth
-    .authenticate(request, response)
-    .then((token) => {
-      res.json({ message: "Secure data", token });
-    })
-    .catch((err) => {
-      res.status(err.code || 500).json(err);
-    });
-});
-
-app.get("/secure", (req, res) => {
-  res.send("secure data");
-});
-
-app.listen(8000, () => {
-  console.log("Server is running on port 8000");
+app.post("/access", async (req, res) => {
+  try {
+    const authToken = req.headers.authorization?.split(" ")[1];
+    const decoded = jwt.verify(authToken!, process.env.JWT_SECRET!);
+  } catch (e) {
+    return res.json({ data: "Not Authorized" });
+  }
+  res.json({ data: "Authorized" });
 });
