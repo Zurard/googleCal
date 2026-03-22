@@ -12,7 +12,7 @@ console.log(session)
 const sendHandler = async () => 
 {
     console.log("Sending request to backend",session);
-    const result = await fetch('${process.env.NEXT_PUBLIC_BACKEND_URL}/access', {
+    const result = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/access`, {
         method : "POST",
         headers : {
             Authorization : `Bearer ${session?.authToken}`   
@@ -37,3 +37,5 @@ const sendHandler = async () =>
         </div>
     )
 }
+
+export default Home;
