@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { SessProvider } from "./components/SessProvider";
 
 
 const geistSans = Geist({
@@ -26,12 +25,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      {/* <head>
+      <meta name="google-signin-client_id" content={process.env.NEXT_PUBLIC_CLIENT_ID}></meta>
+      </head> */}
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SessProvider>
           {children}
-        </SessProvider>
       </body>
     </html>
   );
