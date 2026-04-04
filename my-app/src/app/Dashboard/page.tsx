@@ -1,6 +1,9 @@
-export const Dashboard = async () => {
+'use client";'
 
-  return(<div>
-  welcome to dashboard
-  </div>)
+export default function Dashboard() {
+  return (
+    <div>
+      welcome to dashboard
+    </div>
+  );
 }
