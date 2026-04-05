@@ -11,8 +11,10 @@ const URL_Googles_OAuth_2 = "https://accounts.google.com/o/oauth2/v2/auth"
 const params = new URLSearchParams({
       client_id: clientId || "",
       redirect_uri: "http://localhost:3000/Dashboard",
-        response_type: "code",
-        scope: "profile",
+      response_type: "code",
+      scope: "https://www.googleapis.com/auth/calendar",
+      include_granted_scopes: "true", 
+      access_type: "offline",
     })
 
 export async function GET(){

@@ -2,13 +2,8 @@
 
 import { useState, useEffect } from "react";
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-
 
 export default function Home() {
-  const [authData, setAuthData] = useState(null);
-  const router = useRouter();
 
   const handleLogin = async () => {
    try {
@@ -18,20 +13,7 @@ export default function Home() {
     console.error("Error during login:", error);
    }
   }
-
-
-
-// const clientId = process.env.NEXT_PUBLIC_CLIENT_ID;
-// 
-// const URL_Googles_OAuth_2 = "https://accounts.google.com/o/oauth2/v2/auth"
-
-  // const params = new URLSearchParams({
-  //     client_id: clientId || "",
-  //     redirect_uri: "http://localhost:3000/dashboard",
-  //       response_type: "code",
-  //       scope: "profile",
-  //   })
-
+// http://localhost:3000/Dashboard?iss=https%3A%2F%2Faccounts.google.com&code=4%2F0Aci98E_QAdgz33quJ9kjmHDeagU5gIKOe4JPrDf6d0s5EOw455r8ungcwd1TALD6iIRlGQ&scope=profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile
   return (
     <div className="flex">
       thi is the auth page 
