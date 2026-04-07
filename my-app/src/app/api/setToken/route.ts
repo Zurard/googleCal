@@ -44,9 +44,6 @@ export async function POST(request: Request) {
   console.log("Refresh Token:", refreshToken);
 
   return new Response(
-    JSON.stringify({
-     accessToken,
-      refreshToken,
-    }),
+    JSON.stringify(data),
   );
 }
